@@ -149,7 +149,7 @@ Aplikasi ini menggunakan berbagai widget Flutter untuk membangun UI yang respons
 
 ---
 
-## ⚙️ Teknologi yang Digunakan
+## Teknologi yang Digunakan
 
 | Teknologi  | Penjelasan                   |
 | ---------- | ---------------------------- |
@@ -187,35 +187,14 @@ Digunakan untuk menampilkan splash screen saat aplikasi dibuka.
 
 ## Struktur Folder Project
 
-```bash
-lib/
-│
-├── models/                # Model data (role, menu, dll)
-├── services/              # Logic backend (Supabase, notif, transaksi)
-├── screens/               # UI halaman utama
-├── widgets/               # Komponen reusable
-├── theme/                 # Styling aplikasi
-│
-└── main.dart              # Entry point aplikasi
-```
+## Struktur Folder Project
 
+```
 lib/
-├── models/
+├── models/                # Model data (role, menu, dll)
 │   └── role_config.dart
 │
-├── screens/
-│   ├── barista_orders_screen.dart
-│   ├── dashboard_screen.dart
-│   ├── login_screen.dart
-│   ├── main_shell.dart
-│   ├── menu_screen.dart
-│   ├── pos_screen.dart
-│   ├── register_screen.dart
-│   ├── riwayat_screen.dart
-│   ├── staff_screen.dart
-│   └── stok_screen.dart
-│
-├── services/
+├── services/              # Logic backend (Supabase, notif, transaksi)
 │   ├── auth_service.dart
 │   ├── dashboard_service.dart
 │   ├── history_service.dart
@@ -230,18 +209,29 @@ lib/
 │   ├── transaction_service.dart
 │   └── user_service.dart
 │
-├── theme/
-│   └── app_theme.dart
+├── screens/               # UI halaman utama
+│   ├── barista_orders_screen.dart
+│   ├── dashboard_screen.dart
+│   ├── login_screen.dart
+│   ├── main_shell.dart
+│   ├── menu_screen.dart
+│   ├── pos_screen.dart
+│   ├── register_screen.dart
+│   ├── riwayat_screen.dart
+│   ├── staff_screen.dart
+│   └── stok_screen.dart
 │
-├── widgets/
+├── widgets/               # Komponen reusable
 │   ├── app_alert.dart
 │   ├── app_network_image.dart
 │   ├── bottom_nav.dart
 │   └── top_bar.dart
 │
-└── main.dart
-
----
+├── theme/                 # Styling aplikasi
+│   └── app_theme.dart
+│
+└── main.dart              # Entry point aplikasi
+```
 
 ## Tampilan Aplikasi owner
 
