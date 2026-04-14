@@ -233,164 +233,126 @@ lib/
 └── main.dart              # Entry point aplikasi
 ```
 
-## Tampilan Aplikasi owner
+## Tampilan Aplikasi Owner
 
-###  Login Screen
+### Login Screen
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/2075c152-41a1-4fd4-b2b0-de004837bdda" width="250"/>
+</p>
 
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/2075c152-41a1-4fd4-b2b0-de004837bdda" />
+### Dashboard
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/98f595b9-3337-41e6-8e15-825fa56afc89" width="250"/>
+  <img src="https://github.com/user-attachments/assets/e2e36770-9355-4d59-a4f8-851f30dc2253" width="250"/>
+  <img src="https://github.com/user-attachments/assets/3ca061fb-98b2-4720-8065-0b227c1d1fc0" width="250"/>
+</p>
 
-### Dasbhord 
-
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/98f595b9-3337-41e6-8e15-825fa56afc89" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/e2e36770-9355-4d59-a4f8-851f30dc2253" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/3ca061fb-98b2-4720-8065-0b227c1d1fc0" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/9a2c512f-c50e-4933-b05e-90b06e93a068" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/9a2c512f-c50e-4933-b05e-90b06e93a068" width="250"/>
+</p>
 
 ---
 
+### Manajemen Menu
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/a5a3753d-27ab-425a-9198-ab7f662798c6" width="250"/>
+  <img src="https://github.com/user-attachments/assets/83464cdc-d490-4f95-a680-08ae72733390" width="250"/>
+  <img src="https://github.com/user-attachments/assets/63039ef5-425f-447d-beb6-8d84be629680" width="250"/>
+</p>
 
-###  Manajemen menu
-
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/a5a3753d-27ab-425a-9198-ab7f662798c6" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/83464cdc-d490-4f95-a680-08ae72733390" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/63039ef5-425f-447d-beb6-8d84be629680" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/71f2db27-19cf-48a3-9648-720eb337918f" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/6edfdcbc-27cd-4d3e-88c4-c6a21bb73c79" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/3a0358b7-5684-461c-9bc9-7ef29be4af3f" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/71f2db27-19cf-48a3-9648-720eb337918f" width="250"/>
+  <img src="https://github.com/user-attachments/assets/6edfdcbc-27cd-4d3e-88c4-c6a21bb73c79" width="250"/>
+  <img src="https://github.com/user-attachments/assets/3a0358b7-5684-461c-9bc9-7ef29be4af3f" width="250"/>
+</p>
 
 ---
 
 ### POS Screen
-
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/33e64bc2-3ac2-49d6-8865-23abe69a89aa" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/522c52ec-34bf-4b69-8330-4e69238c06a4" />
-
-
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/33e64bc2-3ac2-49d6-8865-23abe69a89aa" width="250"/>
+  <img src="https://github.com/user-attachments/assets/522c52ec-34bf-4b69-8330-4e69238c06a4" width="250"/>
+</p>
 
 ---
 
 ### Stok Screen
-
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/0ad55a1f-97ab-43c3-b278-03ec5c96db8b" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/fb0d0159-d03a-4f6e-8075-1791f829620c" />
-
----
-
-### Riwayat transaksi
-
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/a3656889-236b-4aae-99fe-8f697a6ea66a" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/26a794d9-7760-4386-97bc-60110d568036" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0ad55a1f-97ab-43c3-b278-03ec5c96db8b" width="250"/>
+  <img src="https://github.com/user-attachments/assets/fb0d0159-d03a-4f6e-8075-1791f829620c" width="250"/>
+</p>
 
 ---
 
-### Manajemen user
-
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/f6841a92-464e-4020-aaf6-6b528608aac6" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/805033f0-b922-4d2a-83ee-67558a1a6d9d" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/ed4dee88-d7de-4102-a3c1-29e4017da133" />
-
+### Riwayat Transaksi
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/a3656889-236b-4aae-99fe-8f697a6ea66a" width="250"/>
+  <img src="https://github.com/user-attachments/assets/26a794d9-7760-4386-97bc-60110d568036" width="250"/>
+</p>
 
 ---
 
-## Tampilan Aplikasi barista
+### Manajemen User
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/f6841a92-464e-4020-aaf6-6b528608aac6" width="250"/>
+  <img src="https://github.com/user-attachments/assets/805033f0-b922-4d2a-83ee-67558a1a6d9d" width="250"/>
+  <img src="https://github.com/user-attachments/assets/ed4dee88-d7de-4102-a3c1-29e4017da133" width="250"/>
+</p>
+
+---
+
+## Tampilan Aplikasi Barista
 
 ### Login Screen
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/f200e6de-6c78-4a6c-96bc-f82ca9de590b" width="250"/>
+</p>
 
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/f200e6de-6c78-4a6c-96bc-f82ca9de590b" />
-
----
-
-### Barista Screen order
-
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/51b8310a-6f5f-4ad0-8195-514d28af8068" />
-
----
+### Barista Screen Order
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/51b8310a-6f5f-4ad0-8195-514d28af8068" width="250"/>
+</p>
 
 ### Stok Screen
-
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/0ad55a1f-97ab-43c3-b278-03ec5c96db8b" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/fb0d0159-d03a-4f6e-8075-1791f829620c" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0ad55a1f-97ab-43c3-b278-03ec5c96db8b" width="250"/>
+  <img src="https://github.com/user-attachments/assets/fb0d0159-d03a-4f6e-8075-1791f829620c" width="250"/>
+</p>
 
 ---
 
-
-## Tampilan Aplikasi kasir
+## Tampilan Aplikasi Kasir
 
 ### Login Screen
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/93c4a857-9d67-4b0e-8301-8b97b7b30b51" width="250"/>
+</p>
 
+### Manajemen Menu
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/a5a3753d-27ab-425a-9198-ab7f662798c6" width="250"/>
+  <img src="https://github.com/user-attachments/assets/83464cdc-d490-4f95-a680-08ae72733390" width="250"/>
+  <img src="https://github.com/user-attachments/assets/63039ef5-425f-447d-beb6-8d84be629680" width="250"/>
+</p>
 
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/93c4a857-9d67-4b0e-8301-8b97b7b30b51" />
-
-
----
-
-###  Manajemen menu
-
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/a5a3753d-27ab-425a-9198-ab7f662798c6" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/83464cdc-d490-4f95-a680-08ae72733390" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/63039ef5-425f-447d-beb6-8d84be629680" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/71f2db27-19cf-48a3-9648-720eb337918f" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/6edfdcbc-27cd-4d3e-88c4-c6a21bb73c79" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/3a0358b7-5684-461c-9bc9-7ef29be4af3f" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/71f2db27-19cf-48a3-9648-720eb337918f" width="250"/>
+  <img src="https://github.com/user-attachments/assets/6edfdcbc-27cd-4d3e-88c4-c6a21bb73c79" width="250"/>
+  <img src="https://github.com/user-attachments/assets/3a0358b7-5684-461c-9bc9-7ef29be4af3f" width="250"/>
+</p>
 
 ---
 
 ### POS Screen
-
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/33e64bc2-3ac2-49d6-8865-23abe69a89aa" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/522c52ec-34bf-4b69-8330-4e69238c06a4" />
-
-
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/33e64bc2-3ac2-49d6-8865-23abe69a89aa" width="250"/>
+  <img src="https://github.com/user-attachments/assets/522c52ec-34bf-4b69-8330-4e69238c06a4" width="250"/>
+</p>
 
 ---
 
-### Riwayat transaksi
-
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/a3656889-236b-4aae-99fe-8f697a6ea66a" />
-
------------------------------------------------------------------------------------------------------------------------------------
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/26a794d9-7760-4386-97bc-60110d568036" />
-
----
-
-
+### Riwayat Transaksi
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/a3656889-236b-4aae-99fe-8f697a6ea66a" width="250"/>
+  <img src="https://github.com/user-attachments/assets/26a794d9-7760-4386-97bc-60110d568036" width="250"/>
+</p>
