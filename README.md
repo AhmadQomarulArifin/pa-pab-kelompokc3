@@ -304,11 +304,6 @@ lib/
   <img src="https://github.com/user-attachments/assets/4572d9b7-7fc2-4915-83ae-e0c4a399a1fc" width="250"/>
 </p>
 
-<br>
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/fb0d0159-d03a-4f6e-8075-1791f829620c" width="250"/>
-</p>
 
 ---
 
