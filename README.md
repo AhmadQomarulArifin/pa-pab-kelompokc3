@@ -236,62 +236,50 @@ lib/
 
 ### Login Screen
 <p align="center">
-  <img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/9092da66-1b6c-4337-96b7-7b56bb0a33d8" />
+  <img src="https://github.com/user-attachments/assets/9092da66-1b6c-4337-96b7-7b56bb0a33d8" width="250"/>
 </p>
 
 ---
 
 ### Dashboard
-
 <p align="center">
-  <img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/e4bb5baa-e361-4d44-8892-39f421ee6dc6" />
+  <img src="https://github.com/user-attachments/assets/e4bb5baa-e361-4d44-8892-39f421ee6dc6" width="250"/>
 </p>
 
 ---
 
 ### Manajemen Menu
-
 <p align="center">
-  <img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/5f66121f-d29f-4b15-9282-bdebfaa177cd" />
+  <img src="https://github.com/user-attachments/assets/5f66121f-d29f-4b15-9282-bdebfaa177cd" width="250"/>
 </p>
-
-
 
 ---
 
 ### POS Screen
-
 <p align="center">
-  <img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/344552b1-599c-472b-8751-ef9092d91812" />
+  <img src="https://github.com/user-attachments/assets/344552b1-599c-472b-8751-ef9092d91812" width="250"/>
 </p>
-
 
 ---
 
 ### Stok Screen
-
 <p align="center">
-  <img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/fe94f2c4-f523-42e7-a94d-ab508aeed762" />
+  <img src="https://github.com/user-attachments/assets/fe94f2c4-f523-42e7-a94d-ab508aeed762" width="250"/>
 </p>
-
 
 ---
 
 ### Riwayat Transaksi
-
 <p align="center">
-  <img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/18027633-504a-48a2-ab08-4c2541ffbc24" />
+  <img src="https://github.com/user-attachments/assets/18027633-504a-48a2-ab08-4c2541ffbc24" width="250"/>
 </p>
-
 
 ---
 
 ### Manajemen User
-
 <p align="center">
-  <img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/dcf11caa-06f6-41d7-9541-64df6ba8d7f1" />
+  <img src="https://github.com/user-attachments/assets/dcf11caa-06f6-41d7-9541-64df6ba8d7f1" width="250"/>
 </p>
-
 
 ---
 
@@ -299,25 +287,24 @@ lib/
 
 ### Login Screen
 <p align="center">
-  <img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/1f8126d2-eff5-4919-9656-498b2c3d1837" />
+  <img src="https://github.com/user-attachments/assets/1f8126d2-eff5-4919-9656-498b2c3d1837" width="250"/>
 </p>
 
 ---
 
 ### Barista Screen Order
 <p align="center">
-  <img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/606ced2e-1f2d-4f0f-b22e-e49213fed81f" />
+  <img src="https://github.com/user-attachments/assets/606ced2e-1f2d-4f0f-b22e-e49213fed81f" width="250"/>
 </p>
 
 ---
 
 ### Stok Screen
-
 <p align="center">
-  <img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/4572d9b7-7fc2-4915-83ae-e0c4a399a1fc" />
+  <img src="https://github.com/user-attachments/assets/4572d9b7-7fc2-4915-83ae-e0c4a399a1fc" width="250"/>
 </p>
 
-<br><br>
+<br>
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/fb0d0159-d03a-4f6e-8075-1791f829620c" width="250"/>
@@ -329,33 +316,26 @@ lib/
 
 ### Login Screen
 <p align="center">
-  <img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/101e3d7e-7c28-4373-b4f9-0c72acd879e6" />
+  <img src="https://github.com/user-attachments/assets/101e3d7e-7c28-4373-b4f9-0c72acd879e6" width="250"/>
 </p>
 
 ---
 
 ### Manajemen Menu
-
 <p align="center">
-  <img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/f058c8ce-045a-46a3-91fc-58bdae8f8668" />
+  <img src="https://github.com/user-attachments/assets/f058c8ce-045a-46a3-91fc-58bdae8f8668" width="250"/>
 </p>
-
 
 ---
 
 ### POS Screen
-
 <p align="center">
-  <img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/073880fa-f0fa-48d2-b2db-31c0be87d304" />
+  <img src="https://github.com/user-attachments/assets/073880fa-f0fa-48d2-b2db-31c0be87d304" width="250"/>
 </p>
-
-
 
 ---
 
 ### Riwayat Transaksi
-
 <p align="center">
-  <img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/8ec8cc11-0ec8-4ff1-a2e2-0a4cd3e0392c" />
+  <img src="https://github.com/user-attachments/assets/8ec8cc11-0ec8-4ff1-a2e2-0a4cd3e0392c" width="250"/>
 </p>
-
