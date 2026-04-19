@@ -134,7 +134,7 @@ Fitur khusus untuk barista dalam mengelola pesanan:
 
 Fitur ini menjadi penghubung utama antara kasir dan barista dalam proses produksi minuman.
 
-##  Widget yang Digunakan (Penjelasan)
+##  Widget yang Digunakan 
 
 Aplikasi ini menggunakan berbagai widget Flutter untuk membangun UI yang responsif:
 
