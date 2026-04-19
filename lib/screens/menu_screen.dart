@@ -5,6 +5,7 @@ import '../services/menu_service.dart';
 import '../services/storage_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_alert.dart';
+import '../widgets/app_error_state.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -22,6 +23,11 @@ class _MenuScreenState extends State<MenuScreen> {
   bool _isLoading = true;
   int _selectedCat = 0;
   final TextEditingController _searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
+  bool _showFab = true;
+  double _lastOffset = 0;
+  Object? _loadError;
 
   final List<String> _cats = ['Semua', 'kopi', 'non-kopi', 'makanan'];
   final List<String> _menuCategoryOptions = ['kopi', 'non-kopi', 'makanan'];
@@ -31,12 +37,28 @@ class _MenuScreenState extends State<MenuScreen> {
     super.initState();
     _loadMenus();
     _searchController.addListener(_applyFilter);
+    _scrollController.addListener(_handleScroll);
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _scrollController.dispose();
     super.dispose();
+  }
+
+  void _handleScroll() {
+    if (!_scrollController.hasClients) return;
+
+    final offset = _scrollController.offset;
+
+    if (offset > _lastOffset + 8 && _showFab) {
+      setState(() => _showFab = false);
+    } else if (offset < _lastOffset - 8 && !_showFab) {
+      setState(() => _showFab = true);
+    }
+
+    _lastOffset = offset;
   }
 
   bool _isNotEmpty(String value) {
@@ -54,14 +76,14 @@ class _MenuScreenState extends State<MenuScreen> {
     final trimmed = value.trim();
     if (trimmed.isEmpty) return false;
     if (_containsEmoji(trimmed)) return false;
-    return RegExp(r'^[a-zA-Z .,()/_-]+$').hasMatch(trimmed);
+    return RegExp(r'^[a-zA-Z ]+$').hasMatch(trimmed);
   }
 
-  bool _isValidGeneralText(String value) {
+  bool _isValidDescription(String value) {
     final trimmed = value.trim();
     if (trimmed.isEmpty) return false;
     if (_containsEmoji(trimmed)) return false;
-    return RegExp(r'^[a-zA-Z0-9 .,()/_-]+$').hasMatch(trimmed);
+    return RegExp(r'^[a-zA-Z ]+$').hasMatch(trimmed);
   }
 
   bool _isValidPrice(String value) {
@@ -81,34 +103,60 @@ class _MenuScreenState extends State<MenuScreen> {
   List<TextInputFormatter> _menuNameFormatters() {
     return [
       FilteringTextInputFormatter.allow(
-        RegExp(r'[a-zA-Z .,()/_-]'),
+        RegExp(r'[a-zA-Z ]'),
       ),
     ];
   }
 
-  List<TextInputFormatter> _generalTextFormatters() {
+  List<TextInputFormatter> _descriptionFormatters() {
     return [
       FilteringTextInputFormatter.allow(
-        RegExp(r'[a-zA-Z0-9 .,()/_-]'),
+        RegExp(r'[a-zA-Z ]'),
       ),
     ];
+  }
+
+  String _capitalizeWords(String text) {
+    final trimmed = text.trim().toLowerCase();
+    if (trimmed.isEmpty) return text;
+
+    return trimmed
+        .split(' ')
+        .where((word) => word.isNotEmpty)
+        .map((word) => word[0].toUpperCase() + word.substring(1))
+        .join(' ');
+  }
+
+  String _capitalizeCategory(String category) {
+    if (category.trim().isEmpty) return category;
+
+    return category
+        .split('-')
+        .map((part) => _capitalizeWords(part))
+        .join('-');
   }
 
   Future<void> _loadMenus() async {
     try {
+      setState(() {
+        _isLoading = true;
+        _loadError = null;
+      });
+
       final data = await _menuService.getMenus();
+
       setState(() {
         _menus = data;
         _isLoading = false;
       });
+
       _applyFilter();
     } catch (e) {
-      setState(() => _isLoading = false);
-      _showAlert(
-        title: 'Gagal memuat menu',
-        message: '$e',
-        type: AppAlertType.error,
-      );
+      debugPrint('MENU LOAD ERROR: $e');
+      setState(() {
+        _isLoading = false;
+        _loadError = e;
+      });
     }
   }
 
@@ -342,7 +390,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       items: _menuCategoryOptions.map((category) {
                         return DropdownMenuItem<String>(
                           value: category,
-                          child: Text(category),
+                          child: Text(_capitalizeCategory(category)),
                         );
                       }).toList(),
                       onChanged: (value) {
@@ -367,7 +415,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       label: 'Deskripsi',
                       hint: 'Deskripsi singkat menu',
                       maxLines: 3,
-                      inputFormatters: _generalTextFormatters(),
+                      inputFormatters: _descriptionFormatters(),
                     ),
                     const SizedBox(height: 16),
                     Text(
@@ -445,7 +493,8 @@ class _MenuScreenState extends State<MenuScreen> {
                                     } finally {
                                       if (mounted) {
                                         setModalState(
-                                            () => isUploading = false);
+                                          () => isUploading = false,
+                                        );
                                       }
                                     }
                                   },
@@ -735,7 +784,9 @@ class _MenuScreenState extends State<MenuScreen> {
                                 : () async {
                                     final name = nameCtrl.text.trim();
                                     final category =
-                                        (selectedCategory ?? '').trim().toLowerCase();
+                                        (selectedCategory ?? '')
+                                            .trim()
+                                            .toLowerCase();
                                     final priceText = priceCtrl.text.trim();
                                     final description = descCtrl.text.trim();
                                     final price =
@@ -755,7 +806,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                       _showAlert(
                                         title: 'Nama menu tidak valid',
                                         message:
-                                            'Nama menu hanya boleh huruf dan tidak boleh emoji, angka, atau karakter aneh.',
+                                            'Nama menu hanya boleh huruf dan spasi saja.',
                                         type: AppAlertType.warning,
                                       );
                                       return;
@@ -791,11 +842,11 @@ class _MenuScreenState extends State<MenuScreen> {
                                       return;
                                     }
 
-                                    if (!_isValidGeneralText(description)) {
+                                    if (!_isValidDescription(description)) {
                                       _showAlert(
                                         title: 'Deskripsi tidak valid',
                                         message:
-                                            'Deskripsi tidak boleh mengandung emoji atau karakter aneh.',
+                                            'Deskripsi hanya boleh huruf dan spasi saja.',
                                         type: AppAlertType.warning,
                                       );
                                       return;
@@ -1152,7 +1203,7 @@ class _MenuScreenState extends State<MenuScreen> {
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: Text(
-                        category.toUpperCase(),
+                        _capitalizeCategory(category).toUpperCase(),
                         style: AppTextStyles.bodyMd.copyWith(
                           color: categoryColor,
                           fontWeight: FontWeight.w800,
@@ -1294,153 +1345,174 @@ class _MenuScreenState extends State<MenuScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.surface,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showMenuForm(),
-        backgroundColor: AppColors.secondary,
-        foregroundColor: Colors.white,
-        elevation: 0,
-        icon: const Icon(Icons.add),
-        label: const Text('Tambah Menu'),
+      floatingActionButton: AnimatedSlide(
+        duration: const Duration(milliseconds: 180),
+        offset: _showFab ? Offset.zero : const Offset(0, 2),
+        child: AnimatedOpacity(
+          duration: const Duration(milliseconds: 180),
+          opacity: _showFab ? 1 : 0,
+          child: IgnorePointer(
+            ignoring: !_showFab,
+            child: FloatingActionButton.extended(
+              onPressed: () => _showMenuForm(),
+              backgroundColor: AppColors.secondary,
+              foregroundColor: Colors.white,
+              elevation: 0,
+              icon: const Icon(Icons.add),
+              label: const Text('Tambah Menu'),
+            ),
+          ),
+        ),
       ),
       body: SafeArea(
         child: _isLoading
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : ListView(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 28),
-                children: [
-                  Text(
-                    'Menu Cafe',
-                    style: AppTextStyles.displayLg.copyWith(fontSize: 34),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Kelola daftar menu, kategori, harga, gambar, dan bahan yang dipakai.',
-                    style: AppTextStyles.bodyMd.copyWith(
-                      color: AppColors.onSurfaceVariant,
-                      height: 1.45,
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-                  Row(
+            : _loadError != null
+                ? AppErrorState(
+                    title: 'Gagal memuat menu',
+                    error: _loadError,
+                    onRetry: _loadMenus,
+                  )
+                : ListView(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 28),
                     children: [
-                      _summaryCard(
-                        title: 'Total Menu',
-                        value: '$totalMenus',
-                        icon: Icons.restaurant_menu_outlined,
-                        color: AppColors.secondary,
+                      Text(
+                        'Menu Cafe',
+                        style: AppTextStyles.displayLg.copyWith(fontSize: 34),
                       ),
-                      const SizedBox(width: 10),
-                      _summaryCard(
-                        title: 'Tersedia',
-                        value: '$availableMenus',
-                        icon: Icons.check_circle_outline,
-                        color: const Color(0xFF2E7D32),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Kelola daftar menu, kategori, harga, gambar, dan bahan yang dipakai.',
+                        style: AppTextStyles.bodyMd.copyWith(
+                          color: AppColors.onSurfaceVariant,
+                          height: 1.45,
+                        ),
                       ),
-                      const SizedBox(width: 10),
-                      _summaryCard(
-                        title: 'Nonaktif',
-                        value: '$unavailableMenus',
-                        icon: Icons.remove_circle_outline,
-                        color: AppColors.error,
+                      const SizedBox(height: 18),
+                      Row(
+                        children: [
+                          _summaryCard(
+                            title: 'Total Menu',
+                            value: '$totalMenus',
+                            icon: Icons.restaurant_menu_outlined,
+                            color: AppColors.secondary,
+                          ),
+                          const SizedBox(width: 10),
+                          _summaryCard(
+                            title: 'Tersedia',
+                            value: '$availableMenus',
+                            icon: Icons.check_circle_outline,
+                            color: const Color(0xFF2E7D32),
+                          ),
+                          const SizedBox(width: 10),
+                          _summaryCard(
+                            title: 'Nonaktif',
+                            value: '$unavailableMenus',
+                            icon: Icons.remove_circle_outline,
+                            color: AppColors.error,
+                          ),
+                        ],
                       ),
+                      const SizedBox(height: 18),
+                      TextField(
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Cari menu atau kategori',
+                          prefixIcon: const Icon(Icons.search),
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 16,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: BorderSide.none,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: BorderSide(
+                              color: AppColors.outlineVariant.withOpacity(0.45),
+                            ),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(18)),
+                            borderSide: BorderSide(
+                              color: AppColors.secondary,
+                              width: 1.3,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: List.generate(_cats.length, (index) {
+                            final isActive = _selectedCat == index;
+
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() => _selectedCat = index);
+                                _applyFilter();
+                              },
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 180),
+                                margin: const EdgeInsets.only(right: 8),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 10,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: isActive
+                                      ? AppColors.secondary
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: isActive
+                                        ? AppColors.secondary
+                                        : AppColors.outlineVariant
+                                            .withOpacity(0.45),
+                                  ),
+                                ),
+                                child: Text(
+                                  _cats[index] == 'Semua'
+                                      ? 'Semua'
+                                      : _capitalizeCategory(_cats[index]),
+                                  style: AppTextStyles.bodyMd.copyWith(
+                                    color: isActive
+                                        ? Colors.white
+                                        : AppColors.onSurfaceVariant,
+                                    fontWeight: isActive
+                                        ? FontWeight.w700
+                                        : FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
+                      const SizedBox(height: 18),
+                      if (_filteredMenus.isEmpty)
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 32),
+                            child: Text(
+                              'Belum ada menu ditemukan.',
+                              style: AppTextStyles.bodyMd.copyWith(
+                                color: AppColors.onSurfaceVariant,
+                              ),
+                            ),
+                          ),
+                        )
+                      else
+                        ..._filteredMenus.map(_menuCard),
                     ],
                   ),
-                  const SizedBox(height: 18),
-                  TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      hintText: 'Cari menu atau kategori',
-                      prefixIcon: const Icon(Icons.search),
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 16,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18),
-                        borderSide: BorderSide.none,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18),
-                        borderSide: BorderSide(
-                          color: AppColors.outlineVariant.withOpacity(0.45),
-                        ),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(18)),
-                        borderSide: BorderSide(
-                          color: AppColors.secondary,
-                          width: 1.3,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: List.generate(_cats.length, (index) {
-                        final isActive = _selectedCat == index;
-
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() => _selectedCat = index);
-                            _applyFilter();
-                          },
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 180),
-                            margin: const EdgeInsets.only(right: 8),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 10,
-                            ),
-                            decoration: BoxDecoration(
-                              color: isActive
-                                  ? AppColors.secondary
-                                  : Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: isActive
-                                    ? AppColors.secondary
-                                    : AppColors.outlineVariant.withOpacity(0.45),
-                              ),
-                            ),
-                            child: Text(
-                              _cats[index],
-                              style: AppTextStyles.bodyMd.copyWith(
-                                color: isActive
-                                    ? Colors.white
-                                    : AppColors.onSurfaceVariant,
-                                fontWeight: isActive
-                                    ? FontWeight.w700
-                                    : FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        );
-                      }),
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-                  if (_filteredMenus.isEmpty)
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 32),
-                        child: Text(
-                          'Belum ada menu ditemukan.',
-                          style: AppTextStyles.bodyMd.copyWith(
-                            color: AppColors.onSurfaceVariant,
-                          ),
-                        ),
-                      ),
-                    )
-                  else
-                    ..._filteredMenus.map(_menuCard),
-                ],
-              ),
       ),
     );
   }

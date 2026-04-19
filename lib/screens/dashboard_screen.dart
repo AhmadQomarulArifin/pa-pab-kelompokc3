@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../services/supabase_service.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_error_state.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -88,26 +89,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       default:
         return '';
     }
-  }
-
-  int _totalToday(List<Map<String, dynamic>> transactions) {
-    final now = DateTime.now();
-
-    return transactions.where((trx) {
-      final t = _trxDate(trx);
-      if (t == null) return false;
-      return _isSameLocalDate(t, now);
-    }).fold<int>(0, (sum, trx) => sum + ((trx['total'] ?? 0) as int));
-  }
-
-  int _totalThisMonth(List<Map<String, dynamic>> transactions) {
-    final now = DateTime.now();
-
-    return transactions.where((trx) {
-      final t = _trxDate(trx);
-      if (t == null) return false;
-      return t.year == now.year && t.month == now.month;
-    }).fold<int>(0, (sum, trx) => sum + ((trx['total'] ?? 0) as int));
   }
 
   int _totalByFilter(List<Map<String, dynamic>> transactions, String filter) {
@@ -900,11 +881,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
             }
 
             if (trxSnapshot.hasError) {
-              return Center(
-                child: Text(
-                  'Gagal memuat dashboard',
-                  style: AppTextStyles.bodyMd,
-                ),
+              debugPrint('DASHBOARD TRX ERROR: ${trxSnapshot.error}');
+              return AppErrorState(
+                title: 'Gagal memuat dashboard',
+                error: trxSnapshot.error,
+                onRetry: () {
+                  if (!mounted) return;
+                  setState(() {});
+                },
               );
             }
 
@@ -917,20 +901,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 }
 
                 if (itemSnapshot.hasError) {
-                  return Center(
-                    child: Text(
-                      'Gagal memuat data best seller',
-                      style: AppTextStyles.bodyMd,
-                    ),
+                  debugPrint('DASHBOARD ITEM ERROR: ${itemSnapshot.error}');
+                  return AppErrorState(
+                    title: 'Gagal memuat data best seller',
+                    error: itemSnapshot.error,
+                    onRetry: () {
+                      if (!mounted) return;
+                      setState(() {});
+                    },
                   );
                 }
 
                 final transactions = trxSnapshot.data ?? [];
                 final items = itemSnapshot.data ?? [];
 
-                final totalToday = _totalToday(transactions);
-                final totalMonth = _totalThisMonth(transactions);
-                final totalTransactions = transactions.length;
+                final filterTitle = _filterTitle(_selectedFilter);
                 final totalByFilter = _totalByFilter(transactions, _selectedFilter);
                 final countByFilter = _countByFilter(transactions, _selectedFilter);
 
@@ -955,16 +940,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Row(
                       children: [
                         _summaryCard(
-                          title: 'Penjualan Hari Ini',
-                          value: _formatRp(totalToday),
-                          subtitle: 'Update otomatis hari ini',
+                          title: 'Penjualan $filterTitle',
+                          value: _formatRp(totalByFilter),
+                          subtitle: 'Update otomatis ${filterTitle.toLowerCase()}',
                           icon: Icons.payments_outlined,
                         ),
                         const SizedBox(width: 12),
                         _summaryCard(
                           title: 'Total Transaksi',
-                          value: '$totalTransactions',
-                          subtitle: 'Semua transaksi masuk',
+                          value: '$countByFilter',
+                          subtitle: 'Jumlah transaksi ${filterTitle.toLowerCase()}',
                           icon: Icons.receipt_long_outlined,
                         ),
                       ],
@@ -973,14 +958,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Row(
                       children: [
                         _summaryCard(
-                          title: 'Penjualan Bulan Ini',
-                          value: _formatRp(totalMonth),
-                          subtitle: 'Akumulasi bulan berjalan',
+                          title: 'Akumulasi $filterTitle',
+                          value: _formatRp(totalByFilter),
+                          subtitle: 'Total penjualan ${filterTitle.toLowerCase()}',
                           icon: Icons.trending_up_outlined,
                         ),
                         const SizedBox(width: 12),
                         _summaryCard(
-                          title: 'Filter ${_filterTitle(_selectedFilter)}',
+                          title: 'Filter $filterTitle',
                           value: _formatRp(totalByFilter),
                           subtitle: '$countByFilter transaksi',
                           icon: Icons.filter_alt_outlined,

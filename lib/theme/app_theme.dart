@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // Core Brand
+  
   static const Color primary = Color(0xFF1E0A07);
   static const Color primaryContainer = Color(0xFF361F1A);
   static const Color secondary = Color(0xFF9D4406);
   static const Color onSecondary = Color(0xFFFFFFFF);
 
-  // Surfaces
+  
   static const Color surface = Color(0xFFFFF8F6);
   static const Color surfaceContainerLowest = Color(0xFFFFFFFF);
   static const Color surfaceContainerLow = Color(0xFFFEF1EC);

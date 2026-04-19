@@ -5,6 +5,7 @@ import '../services/supabase_service.dart';
 import '../services/transaction_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_alert.dart';
+import '../widgets/app_error_state.dart';
 
 class PosScreen extends StatefulWidget {
   const PosScreen({super.key});
@@ -41,20 +42,48 @@ class _PosScreenState extends State<PosScreen> {
     super.dispose();
   }
 
+  bool _containsEmoji(String value) {
+    return RegExp(
+      r'[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]',
+      unicode: true,
+    ).hasMatch(value);
+  }
+
   bool _isValidCustomerName(String value) {
     final trimmed = value.trim();
 
-    if (trimmed.isEmpty) return true;
+    if (trimmed.isEmpty) return false;
+    if (_containsEmoji(trimmed)) return false;
 
-    return RegExp(r'^[a-zA-Z0-9 .,()-]+$').hasMatch(trimmed);
+    return RegExp(r'^[a-zA-Z ]+$').hasMatch(trimmed);
   }
 
   List<TextInputFormatter> _customerNameFormatters() {
     return [
       FilteringTextInputFormatter.allow(
-        RegExp(r'[a-zA-Z0-9 .,()-]'),
+        RegExp(r'[a-zA-Z ]'),
       ),
     ];
+  }
+
+  String _capitalizeWords(String text) {
+    final trimmed = text.trim().toLowerCase();
+    if (trimmed.isEmpty) return text;
+
+    return trimmed
+        .split(' ')
+        .where((word) => word.isNotEmpty)
+        .map((word) => word[0].toUpperCase() + word.substring(1))
+        .join(' ');
+  }
+
+  String _capitalizeCategory(String category) {
+    if (category.trim().isEmpty) return category;
+
+    return category
+        .split('-')
+        .map((part) => _capitalizeWords(part))
+        .join('-');
   }
 
   Stream<List<Map<String, dynamic>>> _menuStream() {
@@ -332,12 +361,21 @@ class _PosScreenState extends State<PosScreen> {
 
     final customerName = _customerController.text.trim();
 
+    if (customerName.isEmpty) {
+      AppAlert.show(
+        context,
+        title: 'Nama pelanggan wajib diisi',
+        message: 'Nama pelanggan tidak boleh kosong atau hanya spasi.',
+        type: AppAlertType.warning,
+      );
+      return;
+    }
+
     if (!_isValidCustomerName(customerName)) {
       AppAlert.show(
         context,
         title: 'Nama pelanggan tidak valid',
-        message:
-            'Nama pelanggan boleh kosong dan boleh angka, tapi tidak boleh emoji atau karakter aneh.',
+        message: 'Nama pelanggan hanya boleh huruf dan spasi saja.',
         type: AppAlertType.warning,
       );
       return;
@@ -469,7 +507,9 @@ class _PosScreenState extends State<PosScreen> {
                 ),
               ),
               child: Text(
-                _categories[index],
+                _categories[index] == 'Semua'
+                    ? 'Semua'
+                    : _capitalizeCategory(_categories[index]),
                 style: AppTextStyles.bodyMd.copyWith(
                   color: isActive ? Colors.white : AppColors.onSurfaceVariant,
                   fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
@@ -541,7 +581,7 @@ class _PosScreenState extends State<PosScreen> {
                         const SizedBox(width: 6),
                         Expanded(
                           child: Text(
-                            category,
+                            _capitalizeCategory(category),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: AppTextStyles.bodyMd.copyWith(
@@ -628,7 +668,8 @@ class _PosScreenState extends State<PosScreen> {
     );
   }
 
-  Widget _cartItem(Map<String, dynamic> item, int index, VoidCallback refreshModal) {
+  Widget _cartItem(
+      Map<String, dynamic> item, int index, VoidCallback refreshModal) {
     final name = (item['name'] ?? '-').toString();
     final price = _parseInt(item['price']);
     final qty = _parseInt(item['qty']);
@@ -868,7 +909,7 @@ class _PosScreenState extends State<PosScreen> {
           inputFormatters: _customerNameFormatters(),
           onChanged: (_) => refreshModal(),
           decoration: InputDecoration(
-            hintText: 'Nama pelanggan (opsional)',
+            hintText: 'Nama pelanggan',
             filled: true,
             fillColor: AppColors.surfaceContainerLow,
             border: OutlineInputBorder(
@@ -1223,15 +1264,14 @@ class _PosScreenState extends State<PosScreen> {
             }
 
             if (snapshot.hasError) {
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Text(
-                    'Gagal memuat menu realtime.',
-                    style: AppTextStyles.bodyMd,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
+              debugPrint('POS MENU STREAM ERROR: ${snapshot.error}');
+              return AppErrorState(
+                title: 'Gagal memuat menu realtime',
+                error: snapshot.error,
+                onRetry: () {
+                  if (!mounted) return;
+                  setState(() {});
+                },
               );
             }
 

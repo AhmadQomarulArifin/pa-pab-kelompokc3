@@ -53,21 +53,21 @@ class IngredientService {
 
   Future<void> deleteIngredient(String id) async {
     try {
-      // 1. Hapus relasi ke menu
+      
       await _client
           .from('menu_ingredients')
           .delete()
           .eq('ingredient_id', id);
 
-      // 2. Hapus relasi ke log stok bahan
+    
       await _client
           .from('stock_logs')
           .delete()
           .eq('ingredient_id', id);
 
-      // 3. (opsional) kalau kamu punya tabel lain yang pakai ingredient_id tambahin di sini
+      
 
-      // 4. Baru hapus bahan utama
+      
       await _client
           .from('ingredients')
           .delete()

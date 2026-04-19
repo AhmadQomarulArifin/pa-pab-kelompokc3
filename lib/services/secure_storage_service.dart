@@ -11,7 +11,7 @@ class SecureStorageService {
     ),
   );
 
-  /// SIMPAN DATA LOGIN
+  
   Future<void> saveLogin({
     required String userId,
     required String email,
@@ -21,13 +21,13 @@ class SecureStorageService {
     await _storage.write(key: 'is_logged_in', value: 'true');
   }
 
-  /// CEK LOGIN
+  
   Future<bool> isLoggedIn() async {
     final value = await _storage.read(key: 'is_logged_in');
     return value == 'true';
   }
 
-  /// GET DATA
+
   Future<String?> getUserId() async {
     return await _storage.read(key: 'user_id');
   }
@@ -36,7 +36,7 @@ class SecureStorageService {
     return await _storage.read(key: 'email');
   }
 
-  /// LOGOUT
+  
   Future<void> logout() async {
     await _storage.deleteAll();
   }

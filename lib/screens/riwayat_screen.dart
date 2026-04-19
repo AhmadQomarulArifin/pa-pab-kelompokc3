@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/supabase_service.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_error_state.dart';
 
 class RiwayatScreen extends StatefulWidget {
   const RiwayatScreen({super.key});
@@ -400,11 +401,14 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
             }
 
             if (snapshot.hasError) {
-              return Center(
-                child: Text(
-                  'Gagal memuat riwayat transaksi',
-                  style: AppTextStyles.bodyMd,
-                ),
+              debugPrint('RIWAYAT STREAM ERROR: ${snapshot.error}');
+              return AppErrorState(
+                title: 'Gagal memuat riwayat transaksi',
+                error: snapshot.error,
+                onRetry: () {
+                  if (!mounted) return;
+                  setState(() {});
+                },
               );
             }
 

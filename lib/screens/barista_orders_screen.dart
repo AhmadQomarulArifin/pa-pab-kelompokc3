@@ -3,6 +3,7 @@ import '../services/supabase_service.dart';
 import '../services/notification_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_alert.dart';
+import '../widgets/app_error_state.dart';
 
 class BaristaOrdersScreen extends StatefulWidget {
   const BaristaOrdersScreen({super.key});
@@ -12,6 +13,8 @@ class BaristaOrdersScreen extends StatefulWidget {
 }
 
 class _BaristaOrdersScreenState extends State<BaristaOrdersScreen> {
+  static const bool isDebugNotif = false;
+
   Stream<List<Map<String, dynamic>>> _ordersStream() {
     return SupabaseService.client
         .from('transactions')
@@ -559,11 +562,14 @@ class _BaristaOrdersScreenState extends State<BaristaOrdersScreen> {
             }
 
             if (snapshot.hasError) {
-              return Center(
-                child: Text(
-                  'Gagal memuat order barista',
-                  style: AppTextStyles.bodyMd,
-                ),
+              debugPrint('BARISTA ORDER STREAM ERROR: ${snapshot.error}');
+              return AppErrorState(
+                title: 'Gagal memuat order barista',
+                error: snapshot.error,
+                onRetry: () {
+                  if (!mounted) return;
+                  setState(() {});
+                },
               );
             }
 
@@ -602,21 +608,23 @@ class _BaristaOrdersScreenState extends State<BaristaOrdersScreen> {
                         height: 1.45,
                       ),
                     ),
-                    const SizedBox(height: 14),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 48,
-                      child: OutlinedButton.icon(
-                        onPressed: _testNotification,
-                        icon: const Icon(Icons.notifications_active_outlined),
-                        label: const Text('Tes Notif'),
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+                    if (isDebugNotif) ...[
+                      const SizedBox(height: 14),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 48,
+                        child: OutlinedButton.icon(
+                          onPressed: _testNotification,
+                          icon: const Icon(Icons.notifications_active_outlined),
+                          label: const Text('Tes Notif'),
+                          style: OutlinedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                     const SizedBox(height: 18),
                     Row(
                       children: [

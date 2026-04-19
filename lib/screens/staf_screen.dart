@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import '../services/supabase_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_alert.dart';
+import '../widgets/app_error_state.dart';
 
 class StafScreen extends StatefulWidget {
   const StafScreen({super.key});
@@ -17,6 +18,7 @@ class _StafScreenState extends State<StafScreen> {
   List<Map<String, dynamic>> users = [];
   List<Map<String, dynamic>> filteredUsers = [];
   bool isLoading = true;
+  Object? _loadError;
 
   final TextEditingController searchController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
@@ -146,6 +148,11 @@ class _StafScreenState extends State<StafScreen> {
 
   Future<void> loadUsers() async {
     try {
+      setState(() {
+        isLoading = true;
+        _loadError = null;
+      });
+
       final data = await client
           .from('users')
           .select()
@@ -159,12 +166,11 @@ class _StafScreenState extends State<StafScreen> {
 
       applyFilter();
     } catch (e) {
-      setState(() => isLoading = false);
-      _showAlert(
-        title: 'Gagal memuat pengguna',
-        message: '$e',
-        type: AppAlertType.error,
-      );
+      debugPrint('STAF LOAD ERROR: $e');
+      setState(() {
+        isLoading = false;
+        _loadError = e;
+      });
     }
   }
 
@@ -1018,96 +1024,102 @@ class _StafScreenState extends State<StafScreen> {
       body: SafeArea(
         child: isLoading
             ? const Center(child: CircularProgressIndicator())
-            : ListView(
-                controller: _scrollController,
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 28),
-                children: [
-                  Text(
-                    'Pengguna',
-                    style: AppTextStyles.displayLg.copyWith(fontSize: 34),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Kelola owner, barista, dan kasir untuk operasional cafe.',
-                    style: AppTextStyles.bodyMd.copyWith(
-                      color: AppColors.onSurfaceVariant,
-                      height: 1.45,
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-                  Row(
+            : _loadError != null
+                ? AppErrorState(
+                    title: 'Gagal memuat pengguna',
+                    error: _loadError,
+                    onRetry: loadUsers,
+                  )
+                : ListView(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 28),
                     children: [
-                      _summaryCard(
-                        title: 'Owner',
-                        value: '$totalOwner',
-                        icon: Icons.admin_panel_settings_outlined,
-                        color: const Color(0xFFEF6C00),
+                      Text(
+                        'Pengguna',
+                        style: AppTextStyles.displayLg.copyWith(fontSize: 34),
                       ),
-                      const SizedBox(width: 10),
-                      _summaryCard(
-                        title: 'Barista',
-                        value: '$totalBarista',
-                        icon: Icons.coffee_maker_outlined,
-                        color: const Color(0xFF2E7D32),
-                      ),
-                      const SizedBox(width: 10),
-                      _summaryCard(
-                        title: 'Kasir',
-                        value: '$totalKasir',
-                        icon: Icons.point_of_sale_outlined,
-                        color: const Color(0xFF1565C0),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 18),
-                  TextField(
-                    controller: searchController,
-                    decoration: InputDecoration(
-                      hintText: 'Cari nama, email, atau role',
-                      prefixIcon: const Icon(Icons.search),
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 16,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18),
-                        borderSide: BorderSide.none,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18),
-                        borderSide: BorderSide(
-                          color: AppColors.outlineVariant.withOpacity(0.45),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Kelola owner, barista, dan kasir untuk operasional cafe.',
+                        style: AppTextStyles.bodyMd.copyWith(
+                          color: AppColors.onSurfaceVariant,
+                          height: 1.45,
                         ),
                       ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(18)),
-                        borderSide: BorderSide(
-                          color: AppColors.secondary,
-                          width: 1.3,
-                        ),
+                      const SizedBox(height: 18),
+                      Row(
+                        children: [
+                          _summaryCard(
+                            title: 'Owner',
+                            value: '$totalOwner',
+                            icon: Icons.admin_panel_settings_outlined,
+                            color: const Color(0xFFEF6C00),
+                          ),
+                          const SizedBox(width: 10),
+                          _summaryCard(
+                            title: 'Barista',
+                            value: '$totalBarista',
+                            icon: Icons.coffee_maker_outlined,
+                            color: const Color(0xFF2E7D32),
+                          ),
+                          const SizedBox(width: 10),
+                          _summaryCard(
+                            title: 'Kasir',
+                            value: '$totalKasir',
+                            icon: Icons.point_of_sale_outlined,
+                            color: const Color(0xFF1565C0),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-                  if (filteredUsers.isEmpty)
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 32),
-                        child: Text(
-                          'Belum ada pengguna ditemukan.',
-                          style: AppTextStyles.bodyMd.copyWith(
-                            color: AppColors.onSurfaceVariant,
+                      const SizedBox(height: 18),
+                      TextField(
+                        controller: searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Cari nama, email, atau role',
+                          prefixIcon: const Icon(Icons.search),
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 16,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: BorderSide.none,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: BorderSide(
+                              color: AppColors.outlineVariant.withOpacity(0.45),
+                            ),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(18)),
+                            borderSide: BorderSide(
+                              color: AppColors.secondary,
+                              width: 1.3,
+                            ),
                           ),
                         ),
                       ),
-                    )
-                  else
-                    ...filteredUsers.map(userCard),
-                  const SizedBox(height: 90),
-                ],
-              ),
+                      const SizedBox(height: 18),
+                      if (filteredUsers.isEmpty)
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 32),
+                            child: Text(
+                              'Belum ada pengguna ditemukan.',
+                              style: AppTextStyles.bodyMd.copyWith(
+                                color: AppColors.onSurfaceVariant,
+                              ),
+                            ),
+                          ),
+                        )
+                      else
+                        ...filteredUsers.map(userCard),
+                      const SizedBox(height: 90),
+                    ],
+                  ),
       ),
     );
   }
